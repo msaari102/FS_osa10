@@ -1,7 +1,7 @@
 import { View, Text, Image, StyleSheet } from 'react-native';
 import theme from '../theme';
 
-const numerizer =  (number) => {
+const numerizer = (number) => {
   if (Number(number)>=1000) {
     return (String(Math.round(Number(number)/100)/10) + 'k')
   }
@@ -31,11 +31,14 @@ const styles = StyleSheet.create({
   },
   languageText: {
     color: 'white',
+    fontFamily: theme.fonts.main,
     flexShrink: 1,
     backgroundColor: theme.colors.primary
   },
   primaryText: {
     fontWeight: "bold", 
+    fontFamily: theme.fonts.main,
+    color: theme.colors.textPrimary,
   }
 });
 
@@ -66,17 +69,17 @@ const RepositoryItem = (props) => {
 
       <View style={styles.flexItemA}>
         <Text>Forks</Text>
-        <Text>{numerizer(repo.forksCount)}</Text>
+        <Text styles={{fontWeight:'bald'}}>{numerizer(repo.forksCount)}</Text>
       </View>
 
       <View style={styles.flexItemA}>
         <Text>Reviews</Text>
-        <Text>{numerizer(repo.reviewCount)}</Text>
+        <Text styles={{fontWeight:'bald'}}>{numerizer(repo.reviewCount)}</Text>
       </View>
 
       <View style={styles.flexItemA}>
         <Text>Rating</Text>
-        <Text>{numerizer(repo.ratingAverage)}</Text>
+        <Text styles={{fontWeight:'bald'}}>{numerizer(repo.ratingAverage)}</Text>
       </View>
 
       </View>

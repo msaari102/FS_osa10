@@ -1,12 +1,15 @@
 import { FlatList, View, StyleSheet } from 'react-native';
 import RepositoryItem from './RepositoryItem';
+//import useRepositories from '../hooks/useRepositories';
+import { useQuery } from '@apollo/client';
+import { GET_REPOSITORIES } from '../graphql/queries';
 
 const styles = StyleSheet.create({
   separator: {
     height: 10,
   },
 });
-
+/*
 const repositories = [
   {
     id: 'jaredpalmer.formik',
@@ -53,13 +56,20 @@ const repositories = [
     ownerAvatarUrl: 'https://avatars3.githubusercontent.com/u/13142323?v=4',
   },
 ];
-
+*/
 const ItemSeparator = () => <View style={styles.separator} />;
 
 const RepositoryList = () => {
+  //const { repositories } = useRepositories();
+  const { data, error, loading } = useQuery(GET_REPOSITORIES, {fetchPolicy: 'cache-and-network'});
+
+  // Get the nodes from the edges array
+  const repositoryNodes = (!error && !loading)
+    ?  data.repositories.edges.map(edge => edge.node)
+    : [];
   return (
     <FlatList
-      data={repositories}
+      data={repositoryNodes}
       ItemSeparatorComponent={ItemSeparator}
 
       renderItem={({ item }) => (

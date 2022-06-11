@@ -1,8 +1,10 @@
-/* eslint-disable no-unused-vars */
-import { Text, TextInput, Pressable, View, StyleSheet } from 'react-native';
-import { Formik, useField } from 'formik';
+import { Text,  Pressable, View, StyleSheet } from 'react-native';
+import { Formik } from 'formik';
 import FormikTextInput from './FormikTextInput';
 import * as yup from 'yup';
+import useSignIn from '../hooks/useSignIn';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-native';
 
 const validationSchema = yup.object().shape({
   username: yup
@@ -56,8 +58,23 @@ const SignInForm = ({ onSubmit }) => {
 };
 
 const SignIn = () => {
-  const onSubmit = values => {
-    console.log(values.username + ': ' + values.password)
+  const navigate = useNavigate();
+  const [signIn, result] = useSignIn();
+
+  useEffect(() => {
+    if (result.data) {
+      navigate("../", { replace: true });
+    }
+  }, [result.data])
+
+  const onSubmit = async (values) => {
+    const { username, password } = values;
+    try {
+      await signIn({ username, password });
+
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (

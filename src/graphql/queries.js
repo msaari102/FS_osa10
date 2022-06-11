@@ -21,13 +21,10 @@ export const GET_REPOSITORIES = gql`
   }
 `
 
-
-export const ALL_AUTHORS = gql`
-  query {
-    allAuthors {
-      name
-      born
-      bookCount
+export const GET_TOKEN = gql`
+  mutation authenticate($username: String!, $password: String!){
+    authenticate(credentials: { username: $username, password: $password }) {
+      accessToken
     }
   }
 `

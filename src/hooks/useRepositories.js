@@ -9,7 +9,7 @@ const useRepositories = () => {
     setLoading(true);
 
     // Replace the IP address part with your own IP address!
-    const response = await fetch(Constants.manifest.extra.apollo_uri);
+    const response = await fetch(Constants.manifest.extra.apollo_uri + ':5000/api/repositories');
     const json = await response.json();
 
     setLoading(false);

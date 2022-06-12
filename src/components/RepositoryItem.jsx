@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
 const RepositoryItem = (props) => {
   const repo = props.repository;
   return (
-    <View style={styles.flexContainer}>
+    <View style={styles.flexContainer} testID="repositoryItem">
       <View style={styles.flexRow}>
         <Image
           style = {{ width: 100, height: 100 }}

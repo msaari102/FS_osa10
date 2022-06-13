@@ -30,6 +30,24 @@ query {
 }
 `
 
+export const GET_SINGLEREPO = gql`
+query getSingleRepositoyry($id: ID!){
+  repository(id: $id)
+    {
+      id
+      ratingAverage
+      reviewCount
+      stargazersCount
+      forksCount
+      fullName
+      ownerAvatarUrl
+      description
+      language
+      url
+    }
+}
+`
+
 export const GET_TOKEN = gql`
   mutation authenticate($username: String!, $password: String!){
     authenticate(credentials: { username: $username, password: $password }) {

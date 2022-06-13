@@ -1,5 +1,6 @@
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, Button } from 'react-native';
 import theme from '../theme';
+import * as Linking from 'expo-linking';
 
 const numerizer = (number) => {
   if (Number(number)>=1000) {
@@ -44,6 +45,16 @@ const styles = StyleSheet.create({
 
 const RepositoryItem = (props) => {
   const repo = props.repository;
+
+  const openUrl = async () => {
+    const supported = await Linking.canOpenURL(repo.url);
+    if (supported) {
+      await Linking.openURL(repo.url);
+    } else {
+      console.log("Don't know how to open this URL")  
+    }
+  }
+
   return (
     <View style={styles.flexContainer} testID="repositoryItem">
       <View style={styles.flexRow}>
@@ -81,9 +92,9 @@ const RepositoryItem = (props) => {
         <Text>Rating</Text>
         <Text styles={{fontWeight:'bald'}}>{numerizer(repo.ratingAverage)}</Text>
       </View>
-
+        
       </View>
-      
+      {props.link&&<Button style={styles.flexItemA} onPress={ () => openUrl()} title={'Open in GitHub'}></Button>}
     </View>
   );
 };

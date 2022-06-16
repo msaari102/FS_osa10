@@ -69,3 +69,13 @@ export const GET_TOKEN = gql`
     }
   }
 `
+
+export const ADD_REVIEW = gql`
+mutation addReview($review: CreateReviewInput) {
+  createReview(review: $review) {
+    repository {
+      id
+    }
+  }
+}
+`

@@ -33,13 +33,16 @@ const AppBar = () => {
     <View style={styles.container}>
       <ScrollView horizontal>
         <Link to="/"><Text style={styles.bartext}>Repository list</Text></Link>
-        {user ? 
+        {user ?
+        <>
+          <Link to="/review"><Text style={styles.bartext}>Create a review</Text></Link> 
           <Pressable onPress={() => {
             authStorage.removeAccessToken();
             apolloClient.resetStore();
           }}>
             <Text style={styles.bartext}>Log out</Text>
           </Pressable> 
+          </>
           : 
           <Link to="/signin"><Text style={styles.bartext}>Sign in</Text></Link>
           }

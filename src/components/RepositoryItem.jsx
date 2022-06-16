@@ -11,14 +11,16 @@ const numerizer = (number) => {
 
 const styles = StyleSheet.create({
   flexContainer: {
+    display: 'flex',
     flexDirection: 'column',
     flexShrink: 1,
     padding: 10,
     backgroundColor: 'white',
+    width: 500
   },
   flexRow: {
     flexDirection: 'row',
-    flexShrink: 1,
+    //flexShrink: 1,
     justifyContent: 'flex-start',
   },
   flexItemA: {
@@ -71,7 +73,7 @@ const RepositoryItem = (props) => {
       </View>
       
 
-      <View style={styles.flexRow}>
+      <View style={[styles.flexRow, /*{justifyContent: 'space-evenly'}*/]}>
 
       <View style={styles.flexItemA}>
         <Text>Stars</Text>
@@ -94,7 +96,9 @@ const RepositoryItem = (props) => {
       </View>
         
       </View>
-      {props.link&&<Button style={styles.flexItemA} onPress={ () => openUrl()} title={'Open in GitHub'}></Button>}
+      <View style={styles.flexRow}>
+        {props.link&&<Button style={styles.flexItemA} onPress={ () => openUrl()} title={'Open in GitHub'}></Button>}
+      </View>
     </View>
   );
 };

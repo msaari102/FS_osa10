@@ -44,6 +44,20 @@ query getSingleRepositoyry($id: ID!){
       description
       language
       url
+      reviews {
+        edges {
+          node {
+            id
+            text
+            rating
+            createdAt
+            user {
+              id
+              username
+            }
+          }
+        }
+      }
     }
 }
 `

@@ -11,8 +11,8 @@ export const useSingleRepository = ({id}) => {
   return { repository, loading, refetch };
 }
 
-const useRepositories = () => {
-  const { data, error, loading, refetch } = useQuery(GET_REPOSITORIES, {fetchPolicy: 'cache-and-network'});
+const useRepositories = ({orderBy, orderDirection}) => {
+  const { data, error, loading, refetch } = useQuery(GET_REPOSITORIES, {variables: {orderBy, orderDirection}, fetchPolicy: 'cache-and-network'});
   const repositories = (!error && !loading)
     ?  data.repositories
     : undefined;

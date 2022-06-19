@@ -110,6 +110,7 @@ export class RepositoryListContainer extends React.Component {
   render() {
     const props = this.props;
     const repositories = props.repositories
+    const onEndReach = props.onEndReach
     
     const repositoryNodes = repositories
       ? repositories.edges.map((edge) => edge.node)
@@ -129,6 +130,8 @@ export class RepositoryListContainer extends React.Component {
           </RepositoryItem>
           </Pressable>
         )}
+        onEndReached={onEndReach}
+        onEndReachedThreshold={0.5}
       />
     );
   }
@@ -197,9 +200,13 @@ const RepositoryList = () => {
       orderBy = "CREATED_AT"
       orderDirection = "DESC"
   }
-  const { repositories } = useRepositories({orderBy: orderBy, orderDirection: orderDirection, searchKeyword: searchKeyword});
+  const { repositories, fetchMore  } = useRepositories({first: 8, orderBy: orderBy, orderDirection: orderDirection, searchKeyword: searchKeyword});
 
-  return <RepositoryListContainer repositories={repositories} order={order} setOrder={setOrder} searchKeyword={searchKeyword} setSearchKeyword={setSearchKeyword} navigate={navigate} />;
+  const onEndReach = () => {
+    fetchMore();
+  };
+
+  return <RepositoryListContainer repositories={repositories} order={order} setOrder={setOrder} searchKeyword={searchKeyword} setSearchKeyword={setSearchKeyword} navigate={navigate} onEndReach={onEndReach} />;
 };
 
 export default RepositoryList;

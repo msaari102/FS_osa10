@@ -58,7 +58,10 @@ const ItemSeparator = () => <View style={styles.separator} />;
 
 const SingleRepository = () => {
   let { userId } = useParams();
-  const { repository } = useSingleRepository({id: userId});
+  const onEndReach = () => {
+    fetchMore();
+  };
+  const { repository, fetchMore } = useSingleRepository({id: userId, first: 6});
 
   if (!repository) return <Text>Waiting</Text>;
 
@@ -73,6 +76,8 @@ const SingleRepository = () => {
       keyExtractor={({ id }) => id}
       ListHeaderComponent={() => <RepositoryInfo repository={repository} />}
       ItemSeparatorComponent={ItemSeparator}
+      onEndReached={onEndReach}
+      onEndReachedThreshold={0.5}
     />
   )
 };

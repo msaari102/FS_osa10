@@ -12,7 +12,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingTop: Constants.statusBarHeight,
     backgroundColor: theme.colors.appbar,
-    
     flexShrink: 1,
   },
   bartext: {

@@ -38,10 +38,10 @@ const styles = StyleSheet.create({
 });
 
 const initialValues = {
-  ownerName: '',
-  repositoryName: '',
+  ownerName: "",
+  repositoryName: "",
   rating: 0,
-  text: '',
+  text: "",
 };
 
 const ReviewForm = ({ onSubmit }) => {

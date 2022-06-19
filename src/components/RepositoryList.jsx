@@ -1,9 +1,10 @@
-import { FlatList, View, StyleSheet, Pressable } from 'react-native';
+import { FlatList, View, StyleSheet, Pressable, TextInput } from 'react-native';
 import { useNavigate } from 'react-router-native';
 import RepositoryItem from './RepositoryItem';
 import useRepositories from '../hooks/useRepositories';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import {Picker} from '@react-native-picker/picker';
+import { useDebouncedCallback } from 'use-debounce';
 
 const styles = StyleSheet.create({
   separator: {
@@ -75,7 +76,73 @@ const PickerList = ({ setOrder, order}) => {
   )
 }
 
-export const RepositoryListContainer = ({ repositories, order, setOrder }) => {
+const RepositoryListHeader = (props) => {
+  const order = props.props.order
+  const setOrder = props.props.setOrder
+  const searchKeyword = props.props.searchKeyword
+  const setSearchKeyword = props.props.setSearchKeyword
+  const debounced = useDebouncedCallback(
+      (searchKeyword) => {
+        setSearchKeyword(searchKeyword);
+      },
+      // delay in ms
+      500
+    );
+  return (
+    <>
+    <TextInput 
+    defaultValue={searchKeyword} onChange={(e) => debounced(e.target.value)} 
+    placeholder={"Search"}/>  
+  <PickerList order={order} setOrder={setOrder}/>
+  </>
+  )
+}
+
+export class RepositoryListContainer extends React.Component {
+  renderHeader = () => {
+    const props = this.props;
+    return (
+      <RepositoryListHeader props={props}
+      />
+    );
+  };
+
+  render() {
+    const props = this.props;
+    const repositories = props.repositories
+    
+    const repositoryNodes = repositories
+      ? repositories.edges.map((edge) => edge.node)
+      : [];
+    return (
+      <FlatList
+        data={repositoryNodes}
+        ItemSeparatorComponent={ItemSeparator}
+        ListHeaderComponent={this.renderHeader}
+        renderItem={({ item }) => (
+          <Pressable onPress={() => {
+            props.navigate(`../user/${item.id}`, { replace: true });
+          }}>    
+          <RepositoryItem
+            key={item.key}
+            repository = {item}>
+          </RepositoryItem>
+          </Pressable>
+        )}
+      />
+    );
+  }
+}
+
+/*
+export const RepositoryListContainer = ({ repositories, order, setOrder, searchKeyword, setSearchKeyword }) => {
+  const debounced = useDebouncedCallback(
+    (searchKeyword) => {
+      setSearchKeyword(searchKeyword);
+    },
+    // delay in ms
+    500
+  );
   const navigate = useNavigate()
   const repositoryNodes = repositories
     ? repositories.edges.map((edge) => edge.node)
@@ -84,7 +151,13 @@ export const RepositoryListContainer = ({ repositories, order, setOrder }) => {
     <FlatList
       data={repositoryNodes}
       ItemSeparatorComponent={ItemSeparator}
-      ListHeaderComponent={() => <PickerList order={order} setOrder={setOrder}/>}
+      ListHeaderComponent={() =>
+      <>
+        <TextInput 
+          defaultValue={searchKeyword} onChange={(e) => debounced(e.target.value)} 
+          placeholder={"Search"}/>  
+        <PickerList order={order} setOrder={setOrder}/>
+    </>}
 
       renderItem={({ item }) => (
         <Pressable onPress={() => {
@@ -99,9 +172,12 @@ export const RepositoryListContainer = ({ repositories, order, setOrder }) => {
     />
   );
 };
+*/
 
 const RepositoryList = () => {
   const [order, setOrder] = useState("0")
+  const [searchKeyword, setSearchKeyword] = useState("")
+  const navigate = useNavigate()
   let orderBy = "CREATED_AT"
   let orderDirection = "DESC"
   switch(order) {
@@ -121,9 +197,9 @@ const RepositoryList = () => {
       orderBy = "CREATED_AT"
       orderDirection = "DESC"
   }
-  const { repositories } = useRepositories({orderBy: orderBy, orderDirection: orderDirection});
+  const { repositories } = useRepositories({orderBy: orderBy, orderDirection: orderDirection, searchKeyword: searchKeyword});
 
-  return <RepositoryListContainer repositories={repositories} order={order} setOrder={setOrder} />;
+  return <RepositoryListContainer repositories={repositories} order={order} setOrder={setOrder} searchKeyword={searchKeyword} setSearchKeyword={setSearchKeyword} navigate={navigate} />;
 };
 
 export default RepositoryList;

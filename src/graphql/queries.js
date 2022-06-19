@@ -28,13 +28,34 @@ export const GET_REPOSITORIES = gql`
 `
 
 export const GET_ME = gql`
-query {
-    me {
-      id
-      username
+query Me ($includeReviews: Boolean = false){
+  me {
+    id
+    username
+    reviews @include(if: $includeReviews){
+      totalCount
+      pageInfo {
+        startCursor
+        endCursor
+        hasNextPage
+      }
+      edges {
+        cursor
+        node {
+          id
+          text
+          rating
+          createdAt
+          repository {
+            fullName
+          }
+        }
+      }
     }
+  }
 }
 `
+
 
 export const GET_SINGLEREPO = gql`
 query getSingleRepositoyry($id: ID!, $after: String, $first: Int){

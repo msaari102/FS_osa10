@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 const AppBar = () => {
   const apolloClient = useApolloClient();
   const authStorage = useAuthStorage();
-  const { data, error, loading } = useQuery(GET_ME, {fetchPolicy: 'cache-and-network'});
+  const { data, error, loading } = useQuery(GET_ME, {variables: {includeReviews: false}, fetchPolicy: 'cache-and-network'});
   const user = (!error && !loading)
     ?  data.me
     : null
@@ -35,6 +35,7 @@ const AppBar = () => {
         {user ?
         <>
           <Link to="/review"><Text style={styles.bartext}>Create a review</Text></Link> 
+          <Link to="/userReviews"><Text style={styles.bartext}>My reviews</Text></Link>
           <Pressable onPress={() => {
             authStorage.removeAccessToken();
             apolloClient.resetStore();
@@ -54,4 +55,4 @@ const AppBar = () => {
   )
 };
 
-export default AppBar;
+export default AppBar;     

@@ -48,6 +48,7 @@ query Me ($includeReviews: Boolean = false){
           createdAt
           repository {
             fullName
+            id
           }
         }
       }
@@ -119,5 +120,11 @@ mutation addUser($user: CreateUserInput) {
   createUser(user: $user) {
     username
   }
+}
+`
+
+export const DELETE_REVIEW = gql`
+mutation deleteReview($deleteReviewId: ID!) {
+  deleteReview(id: $deleteReviewId)
 }
 `

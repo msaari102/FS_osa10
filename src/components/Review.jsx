@@ -12,12 +12,13 @@ const validationSchema = yup.object().shape({
     .required('Username is required'),
   repositoryName: yup
     .string()
-    .required('Password is required'),
+    .required('Repository name is required'),
   rating: yup
     .number()
-    .min(0, 'Review must be between 0 and 100')
-    .max(100, 'Review must be between 0 and 100')
-    .required('Password is required'),
+    .integer()
+    .min(0, 'Rating must be between 0 and 100')
+    .max(100, 'Rating must be between 0 and 100')
+    .required('Rating is required'),
   text: yup
     .string(),
 });
@@ -68,7 +69,7 @@ const ReviewForm = ({ onSubmit }) => {
         placeholder="Review"
         style={styles.container}
         multiline
-        numberOfLines='5'
+        numberOfLines={5}
       />
       <Pressable onPress={onSubmit} style={{padding: 10}}>
         <Text style={styles.button}>Create a review</Text>
